@@ -154,7 +154,7 @@ class CacheService {
       entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
       
       const toRemove = entries.slice(0, this.cache.size - this.maxSize + 1);
-      toRemove.forEach(([_key]) => this.cache.delete(_key));
+      toRemove.forEach(([key]) => this.cache.delete(key));
     }
   }
 

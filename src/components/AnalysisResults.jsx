@@ -1,6 +1,6 @@
 // src/components/AnalysisResults.jsx - Modern Enhanced Design
 import React from 'react';
-import { Download, CheckCircle, AlertCircle, Type, Image, Layout, Brain, Sparkles, Users, Clock, ChevronRight, Heart } from 'lucide-react';
+import { Download, CheckCircle, AlertCircle, Type, Image, Layout, Brain, Sparkles, Users, Clock, ChevronRight, Heart, TrendingUp, FileText, Palette, Target, Layers, MessageSquare, ArrowRight, BookOpen, HelpCircle, Info, Eye } from 'lucide-react';
 
 const AnalysisResults = ({ analysis, onExportPDF, onExportJSON, onExportQuestions, onExportDesignBrief, uploadedFileName }) => {
 
@@ -39,7 +39,7 @@ const AnalysisResults = ({ analysis, onExportPDF, onExportJSON, onExportQuestion
         </div>
         {trend && (
           <div className={`flex items-center gap-1 text-${trend === 'up' ? 'green' : 'red'}-600 text-sm font-medium`}>
-            <TrendingUpIcon className="w-4 h-4" />
+            <TrendingUp className="w-4 h-4" />
             {trend === 'up' ? '↑' : '↓'}
           </div>
         )}
@@ -167,14 +167,14 @@ const AnalysisResults = ({ analysis, onExportPDF, onExportJSON, onExportQuestion
       {/* Enhanced Quick Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
-          icon={TrendingUpIcon} 
+          icon={TrendingUp} 
           title="Presentation Type" 
           value={analysis?.presentationType?.primary || 'Not specified'} 
           color="blue"
           subtitle="Primary classification"
         />
         <StatCard 
-          icon={PaletteIcon} 
+          icon={Palette} 
           title="Design Complexity" 
           value={analysis?.metadata?.design_complexity || 'Not specified'} 
           color="purple"
@@ -200,13 +200,13 @@ const AnalysisResults = ({ analysis, onExportPDF, onExportJSON, onExportQuestion
         {/* Left Column */}
         <div className="space-y-6">
           {/* Enhanced Presentation Type */}
-          <SectionCard title="Presentation Classification" icon={TrendingUpIcon} color="blue" badge="AI Analysis">
+          <SectionCard title="Presentation Classification" icon={Target} color="blue" badge="AI Analysis">
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <MetricCard
                   title="Primary Type"
                   value={analysis?.presentationType?.primary || 'Not specified'}
-                  icon={TargetIcon}
+                  icon={Target}
                   color="blue"
                 />
                 {analysis?.presentationType?.secondary && (
@@ -237,28 +237,28 @@ const AnalysisResults = ({ analysis, onExportPDF, onExportJSON, onExportQuestion
           </SectionCard>
 
           {/* Enhanced Strategic Direction */}
-          <SectionCard title="Strategic Direction" icon={TargetIcon} color="purple" badge="Core Strategy">
+          <SectionCard title="Strategic Direction" icon={Target} color="purple" badge="Core Strategy">
             <div className="space-y-6">
               <div className="grid grid-cols-1 gap-4">
                 <MetricCard
                   title="Primary Strategy"
                   value={analysis?.strategicDirection?.primaryStrategy || 'Not specified'}
                   description="Main strategic approach"
-                  icon={TargetIcon}
+                  icon={Target}
                   color="purple"
                 />
                 <MetricCard
                   title="Communication Goal"
                   value={analysis?.strategicDirection?.communicationGoal || 'Not specified'}
                   description="Primary communication objective"
-                  icon={MessageSquareIcon}
+                  icon={MessageSquare}
                   color="blue"
                 />
                 <MetricCard
                   title="Call to Action"
                   value={analysis?.strategicDirection?.callToAction || 'Not specified'}
                   description="Desired audience response"
-                  icon={ArrowRightIcon}
+                  icon={ArrowRight}
                   color="green"
                 />
               </div>
@@ -266,7 +266,7 @@ const AnalysisResults = ({ analysis, onExportPDF, onExportJSON, onExportQuestion
           </SectionCard>
 
           {/* Enhanced Design Direction */}
-          <SectionCard title="Design Recommendations" icon={PaletteIcon} color="green" badge="Visual Guide">
+          <SectionCard title="Design Recommendations" icon={Layers} color="green" badge="Visual Guide">
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <MetricCard
@@ -301,21 +301,21 @@ const AnalysisResults = ({ analysis, onExportPDF, onExportJSON, onExportQuestion
         {/* Right Column */}
         <div className="space-y-6">
           {/* Enhanced Contextual Analysis */}
-          <SectionCard title="Contextual Analysis" icon={UsersIcon} color="orange" badge="Audience Focus">
+          <SectionCard title="Contextual Analysis" icon={Users} color="orange" badge="Audience Focus">
             <div className="space-y-6">
               <div className="grid grid-cols-1 gap-4">
                 <MetricCard
                   title="Objective"
                   value={analysis?.contextualGrounding?.identifiedObjective || 'Not specified'}
                   description="Presentation purpose"
-                  icon={TargetIcon}
+                  icon={Target}
                   color="orange"
                 />
                 <MetricCard
                   title="Audience Profile"
                   value={analysis?.contextualGrounding?.audienceProfile || 'Not specified'}
                   description="Target audience characteristics"
-                  icon={UsersIcon}
+                  icon={Users}
                   color="blue"
                 />
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
@@ -337,7 +337,7 @@ const AnalysisResults = ({ analysis, onExportPDF, onExportJSON, onExportQuestion
           </SectionCard>
 
           {/* Enhanced Priority Actions */}
-          <SectionCard title="Priority Actions" icon={CheckCircleIcon} color="red" badge="Critical Fixes">
+          <SectionCard title="Priority Actions" icon={CheckCircle} color="red" badge="Critical Fixes">
             <div className="space-y-6">
               <div>
                 <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
@@ -371,7 +371,7 @@ const AnalysisResults = ({ analysis, onExportPDF, onExportJSON, onExportQuestion
           </SectionCard>
 
           {/* Enhanced Storytelling Structure */}
-          <SectionCard title="Storytelling Approach" icon={Type} color="indigo" badge="Narrative">
+          <SectionCard title="Storytelling Approach" icon={BookOpen} color="indigo" badge="Narrative">
             <div className="space-y-6">
               <div className="grid grid-cols-1 gap-4">
                 <MetricCard
