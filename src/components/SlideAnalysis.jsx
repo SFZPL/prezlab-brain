@@ -5,6 +5,16 @@ import {
   CheckCircle, Circle, Image, Loader2 
 } from 'lucide-react';
 
+// Get the API base URL dynamically
+const getApiBaseUrl = () => {
+  // In development, use localhost
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:5000';
+  }
+  // In production, use the same origin (Railway will serve both frontend and backend)
+  return '';
+};
+
 const SlideAnalysis = ({ 
   analysis, 
   apiKey, 
@@ -68,7 +78,8 @@ const SlideAnalysis = ({
 
       console.log('Sending slide analysis request:', requestBody);
 
-      const response = await fetch('http://localhost:5000/analyze-slide', {
+      const apiBaseUrl = getApiBaseUrl();
+      const response = await fetch(`${apiBaseUrl}/analyze-slide`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

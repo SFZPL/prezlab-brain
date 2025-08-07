@@ -1,6 +1,6 @@
 // src/components/AnalysisResults.jsx - Modern Enhanced Design
 import React from 'react';
-import { Download, CheckCircle, AlertCircle, TrendingUp, Palette, Type, Image, Layout, Brain, Sparkles, Zap, Target, Users, Clock, BarChart3, Lightbulb, Shield, Star, ArrowRight, ChevronRight, ChevronLeft, Maximize2, Minimize2, RefreshCw, Share2, BookOpen, Database, Cpu, Eye, FileText, MessageSquare, Layers, Settings, HelpCircle, Info, Award, Trophy, Heart, Target as TargetIcon, Users as UsersIcon, Palette as PaletteIcon, TrendingUp as TrendingUpIcon, CheckCircle as CheckCircleIcon, AlertCircle as AlertCircleIcon, Clock as ClockIcon, BarChart3 as BarChart3Icon, Lightbulb as LightbulbIcon, Shield as ShieldIcon, Star as StarIcon, ArrowRight as ArrowRightIcon, ChevronRight as ChevronRightIcon, ChevronLeft as ChevronLeftIcon, Maximize2 as Maximize2Icon, Minimize2 as Minimize2Icon, RefreshCw as RefreshCwIcon, Share2 as Share2Icon, BookOpen as BookOpenIcon, Database as DatabaseIcon, Cpu as CpuIcon, Eye as EyeIcon, FileText as FileTextIcon, MessageSquare as MessageSquareIcon, Layers as LayersIcon, Settings as SettingsIcon, HelpCircle as HelpCircleIcon, Info as InfoIcon, Award as AwardIcon, Trophy as TrophyIcon } from 'lucide-react';
+import { Download, CheckCircle, AlertCircle, Type, Image, Layout, Brain, Sparkles, Users, Clock, ChevronRight, Heart } from 'lucide-react';
 
 const AnalysisResults = ({ analysis, onExportPDF, onExportJSON, onExportQuestions, onExportDesignBrief, uploadedFileName }) => {
 

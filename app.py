@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, send_from_directory
 from flask_cors import CORS
 import os
 import json
@@ -36,7 +36,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='build', static_url_path='')
 CORS(app)
 
 # Production configuration
@@ -50,6 +50,10 @@ else:
 # Enhanced configuration
 app.config['MAX_CONTENT_LENGTH'] = 200 * 1024 * 1024 * 3  # 600MB max file size
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
+# Create upload folder if it doesn't exist
+app.config['UPLOAD_FOLDER'] = 'uploads'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Error types
 class ErrorType(Enum):
@@ -1476,7 +1480,21 @@ file_parser = FileParser()
 @app.route('/')
 def index():
     """Main application page - serve React app"""
-    return send_file('public/index.html')
+    try:
+        # Try to serve from build directory (production)
+        return send_from_directory('build', 'index.html')
+    except FileNotFoundError:
+        # Fallback to public directory (development)
+        return send_file('public/index.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    """Serve static files from build directory"""
+    try:
+        return send_from_directory('build', path)
+    except FileNotFoundError:
+        # Fallback to public directory
+        return send_from_directory('public', path)
 
 @app.route('/health')
 def health_check():

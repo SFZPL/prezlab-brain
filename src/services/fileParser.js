@@ -2,10 +2,20 @@
 import mammoth from 'mammoth';
 import cacheService from './cacheService';
 
+// Get the API base URL dynamically
+const getApiBaseUrl = () => {
+  // In development, use localhost
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:5000';
+  }
+  // In production, use the same origin (Railway will serve both frontend and backend)
+  return '';
+};
+
 class FileParser {
   constructor() {
     // Configure Python parser service URL
-    this.pythonParserUrl = 'http://localhost:5000'; // Flask backend service
+    this.pythonParserUrl = getApiBaseUrl(); // Dynamic Flask backend service URL
   }
   
   async parseFile(file) {
