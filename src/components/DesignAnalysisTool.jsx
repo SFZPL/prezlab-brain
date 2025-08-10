@@ -26,7 +26,7 @@ const DesignAnalysisTool = () => {
   const [activeTab, setActiveTab] = useState('upload');
   const [error, setError] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
   const [processingStage, setProcessingStage] = useState('');
   const [progressValue, setProgressValue] = useState(0);
 

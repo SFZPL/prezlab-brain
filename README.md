@@ -55,28 +55,28 @@ A powerful AI-powered presentation design analysis tool that uses OpenAI GPT-4 a
 ## 🚀 Installation
 
 ### **1. Clone the Repository**
-```bash
-git clone <repository-url>
-cd ai-design-analyzer
-```
+   ```bash
+   git clone <repository-url>
+   cd ai-design-analyzer
+   ```
 
 ### **2. Backend Setup**
-```bash
+   ```bash
 # Create Python virtual environment
-python -m venv venv
-
+   python -m venv venv
+   
 # Activate virtual environment
 # Windows:
 .\venv\Scripts\activate
 # macOS/Linux:
-source venv/bin/activate
+   source venv/bin/activate
 
 # Install Python dependencies
-pip install -r requirements.txt
-```
+   pip install -r requirements.txt
+   ```
 
 ### **3. Frontend Setup**
-```bash
+   ```bash
 # Install Node.js dependencies
 npm install
 ```
@@ -91,33 +91,14 @@ SECRET_KEY=your_secret_key_here
 ## 🏃‍♂️ Running the Application
 
 ### **1. Start the Flask Backend**
-```bash
+   ```bash
 # Activate virtual environment (if not already activated)
 .\venv\Scripts\activate  # Windows
 # source venv/bin/activate  # macOS/Linux
 
 # Start Flask server
-python app.py
-
-### **2. Start the React Frontend**
-```bash
-# In a new terminal window
-npm start
-```
-
-### **3. Access the Application**
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:5000
-
-## 🚀 Deployment
-
-For production deployment, see [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
-
-**Quick Deploy Options:**
-- **Heroku**: `heroku create && git push heroku main`
-- **Railway**: Connect GitHub repo at [railway.app](https://railway.app)
-- **Render**: Connect GitHub repo at [render.com](https://render.com)
-```
+   python app.py
+   ```
 The backend will run on `http://localhost:5000`
 
 ### **2. Start the React Frontend**

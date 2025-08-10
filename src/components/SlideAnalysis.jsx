@@ -5,16 +5,6 @@ import {
   CheckCircle, Circle, Image, Loader2 
 } from 'lucide-react';
 
-// Get the API base URL dynamically
-const getApiBaseUrl = () => {
-  // In development, use localhost
-  if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:5000';
-  }
-  // In production, use the same origin (Railway will serve both frontend and backend)
-  return '';
-};
-
 const SlideAnalysis = ({ 
   analysis, 
   apiKey, 
@@ -78,8 +68,7 @@ const SlideAnalysis = ({
 
       console.log('Sending slide analysis request:', requestBody);
 
-      const apiBaseUrl = getApiBaseUrl();
-      const response = await fetch(`${apiBaseUrl}/analyze-slide`, {
+      const response = await fetch('http://localhost:5000/analyze-slide', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -271,12 +260,21 @@ const SlideAnalysis = ({
               
               {/* Slide Content Preview */}
               <div className="mb-3">
-                <div className="text-xs text-gray-600 line-clamp-2 mb-2">
-                  {slide.text_content 
-                    ? slide.text_content.substring(0, 80) + (slide.text_content.length > 80 ? '...' : '')
-                    : 'No text content'
-                  }
-                </div>
+                {slide.thumbnail_url ? (
+                  <img
+                    src={slide.thumbnail_url}
+                    alt={`Slide ${slide.slide_number}`}
+                    className="w-full h-24 object-cover rounded border border-gray-200 mb-2"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="text-xs text-gray-600 line-clamp-2 mb-2">
+                    {slide.text_content 
+                      ? slide.text_content.substring(0, 80) + (slide.text_content.length > 80 ? '...' : '')
+                      : 'No text content'
+                    }
+                  </div>
+                )}
                 
                 {/* Layout Type */}
                 <div className="mb-2">
@@ -365,53 +363,42 @@ const SlideAnalysis = ({
               {/* Slide Content Preview */}
               <div className="space-y-3">
                 {/* Visual Slide Thumbnail */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
-                  <div className="aspect-video bg-white rounded shadow-sm flex items-center justify-center relative">
-                    {currentSlide.text_content ? (
-                      <div className="p-4 w-full h-full flex flex-col justify-center">
-                        <div className="text-center">
-                          <h3 className="text-lg font-bold text-gray-900 mb-3">
-                            Slide {currentSlide.slide_number}
-                          </h3>
-                          <div className="text-sm text-gray-600 max-h-24 overflow-hidden">
-                            {currentSlide.text_content.split('\n').slice(0, 3).map((line, index) => (
-                              <p key={index} className={line.trim() ? 'mb-1' : 'mb-2'}>
-                                {line.trim() || '\u00A0'}
-                              </p>
-                            ))}
-                            {currentSlide.text_content.split('\n').length > 3 && (
-                              <p className="text-gray-400 text-xs">...</p>
-                            )}
+                {currentSlide.thumbnail_url ? (
+                  <img
+                    src={currentSlide.thumbnail_url}
+                    alt={`Slide ${currentSlide.slide_number}`}
+                    className="w-full rounded-lg border border-blue-200 shadow-sm"
+                  />
+                ) : (
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div className="aspect-video bg-white rounded shadow-sm flex items-center justify-center relative">
+                      {currentSlide.text_content ? (
+                        <div className="p-4 w-full h-full flex flex-col justify-center">
+                          <div className="text-center">
+                            <h3 className="text-lg font-bold text-gray-900 mb-3">
+                              Slide {currentSlide.slide_number}
+                            </h3>
+                            <div className="text-sm text-gray-600 max-h-24 overflow-hidden">
+                              {currentSlide.text_content.split('\n').slice(0, 3).map((line, index) => (
+                                <p key={index} className={line.trim() ? 'mb-1' : 'mb-2'}>
+                                  {line.trim() || '\u00A0'}
+                                </p>
+                              ))}
+                              {currentSlide.text_content.split('\n').length > 3 && (
+                                <p className="text-gray-400 text-xs">...</p>
+                              )}
+                            </div>
                           </div>
                         </div>
-                        
-                        {/* Slide Elements Overlay */}
-                        <div className="absolute top-2 right-2 flex gap-1">
-                          {currentSlide.images > 0 && (
-                            <span className="px-1.5 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">
-                              📷
-                            </span>
-                          )}
-                          {currentSlide.charts > 0 && (
-                            <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">
-                              📊
-                            </span>
-                          )}
-                          {currentSlide.tables > 0 && (
-                            <span className="px-1.5 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
-                              📋
-                            </span>
-                          )}
+                      ) : (
+                        <div className="text-center text-gray-400">
+                          <Image className="w-8 h-8 mx-auto mb-2" />
+                          <p className="text-sm">No content</p>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="text-center text-gray-400">
-                        <Image className="w-8 h-8 mx-auto mb-2" />
-                        <p className="text-sm">No content</p>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
                 
                 {currentSlide.text_content ? (
                   <div className="space-y-2">

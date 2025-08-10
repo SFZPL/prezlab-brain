@@ -2,20 +2,11 @@
 import mammoth from 'mammoth';
 import cacheService from './cacheService';
 
-// Get the API base URL dynamically
-const getApiBaseUrl = () => {
-  // In development, use localhost
-  if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:5000';
-  }
-  // In production, use the same origin (Railway will serve both frontend and backend)
-  return '';
-};
-
 class FileParser {
   constructor() {
-    // Configure Python parser service URL
-    this.pythonParserUrl = getApiBaseUrl(); // Dynamic Flask backend service URL
+    // Configure Python parser service URL; '' means same-origin (behind proxy)
+    const base = (process.env.REACT_APP_PARSER_URL || '').replace(/\/$/, '');
+    this.pythonParserUrl = base; // '' or 'http://host:port'
   }
   
   async parseFile(file) {
@@ -83,7 +74,7 @@ class FileParser {
     
     try {
       // First check if Python service is available
-      const healthCheck = await fetch(`${this.pythonParserUrl}/health`);
+      const healthCheck = await fetch(`${this.pythonParserUrl}/health`.replace(/^\//, '/'));
       if (!healthCheck.ok) {
         throw new Error('Python parsing service unavailable');
       }
@@ -92,7 +83,7 @@ class FileParser {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(`${this.pythonParserUrl}/parse-pptx`, {
+      const response = await fetch(`${this.pythonParserUrl}/parse-pptx`.replace(/^\//, '/'), {
         method: 'POST',
         body: formData,
       });
@@ -125,16 +116,7 @@ class FileParser {
       console.warn('Python parsing failed:', error.message);
       
       // Fallback with helpful message
-      throw new Error(`PowerPoint parsing failed. 
-
-Python service error: ${error.message}
-
-Please either:
-1. Start the Python parsing service (python simple_ppt_parser.py)
-2. Convert your PowerPoint to PDF format
-3. Export as plain text from PowerPoint
-
-This ensures you get accurate analysis of your content about lions (or whatever your presentation topic is) instead of technical XML metadata.`);
+      throw new Error(`PowerPoint parsing failed. \n\nPython service error: ${error.message}\n\nPlease either:\n1. Start the Python parsing service (python simple_ppt_parser.py)\n2. Convert your PowerPoint to PDF format\n3. Export as plain text from PowerPoint\n\nThis ensures you get accurate analysis of your content instead of technical XML metadata.`);
     }
   }
 
@@ -187,16 +169,7 @@ This ensures you get accurate analysis of your content about lions (or whatever 
   createInformedFallback(file, error) {
     return {
       slideCount: null,
-      textContent: `File parsing failed for ${file.name}. 
-
-Error: ${error.message}
-
-For PowerPoint files (.ppt/.pptx):
-1. Start Python parsing service: python simple_ppt_parser.py
-2. Or convert to PDF format
-3. Or export as plain text
-
-This ensures you get your actual presentation content instead of XML metadata.`,
+      textContent: `File parsing failed for ${file.name}. \n\nError: ${error.message}\n\nFor PowerPoint files (.ppt/.pptx):\n1. Start Python parsing service: python simple_ppt_parser.py\n2. Or convert to PDF format\n3. Or export as plain text\n\nThis ensures you get your actual presentation content instead of XML metadata.`,
       metadata: {
         colors: [],
         fonts: [],
