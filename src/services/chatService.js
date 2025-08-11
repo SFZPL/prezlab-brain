@@ -18,7 +18,7 @@ class ChatService {
         const messages = [
           systemMessage,
           ...chatHistory.slice(-10), // Keep last 10 messages for context
-          { role: 'user', content: message }
+          { role: 'user', content: this.decorateUserMessage(message, context) }
         ];
   
         const response = await fetch(`${this.baseURL}/chat/completions`, {
@@ -81,6 +81,24 @@ class ChatService {
   
   Remember: Every design decision should serve the presentation's strategic purpose, not just look good.`
       };
+    }
+
+    // If user asks comparative questions like "which slide needs the most work?",
+    // direct the model to use the SLIDE QUALITY SUMMARY embedded in the context.
+    decorateUserMessage(message, context) {
+      const lower = (message || '').toLowerCase();
+      const comparative = [
+        'which slide needs the most work',
+        'worst slide',
+        'needs the most improvement',
+        'biggest issue slide',
+        'top slides to fix'
+      ].some(k => lower.includes(k));
+
+      if (!comparative) return message;
+
+      // Hint the model to consult the precomputed summary and respond succinctly
+      return `${message}\n\nNote: Use the SLIDE QUALITY SUMMARY in the context to answer with a ranked list (top 3) and specific reasons drawn from the summary and analysis. Provide slide numbers and concrete next actions.`;
     }
   
     // Suggest relevant questions based on current analysis
