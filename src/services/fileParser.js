@@ -4,9 +4,14 @@ import cacheService from './cacheService';
 
 class FileParser {
   constructor() {
-    // Configure Python parser service URL; '' means same-origin (behind proxy)
-    const base = (process.env.REACT_APP_PARSER_URL || '').replace(/\/$/, '');
-    this.pythonParserUrl = base; // '' or 'http://host:port'
+    // Configure Python parser service URL; '' means same-origin (dev proxy only)
+    // In production, ensure REACT_APP_PARSER_URL or REACT_APP_API_BASE_URL points to your backend
+    const base = (
+      process.env.REACT_APP_PARSER_URL ||
+      process.env.REACT_APP_API_BASE_URL ||
+      ''
+    ).replace(/\/$/, '');
+    this.pythonParserUrl = base; // '' or 'https://your-backend'
   }
   
   async parseFile(file) {
@@ -116,7 +121,10 @@ class FileParser {
       console.warn('Python parsing failed:', error.message);
       
       // Fallback with helpful message
-      throw new Error(`PowerPoint parsing failed. \n\nPython service error: ${error.message}\n\nPlease either:\n1. Start the Python parsing service (python simple_ppt_parser.py)\n2. Convert your PowerPoint to PDF format\n3. Export as plain text from PowerPoint\n\nThis ensures you get accurate analysis of your content instead of technical XML metadata.`);
+      const guidance = this.pythonParserUrl
+        ? `Backend base URL detected: ${this.pythonParserUrl}`
+        : 'No backend base URL detected. Set REACT_APP_PARSER_URL (or REACT_APP_API_BASE_URL) to your backend URL in Netlify env and redeploy.';
+      throw new Error(`PowerPoint parsing failed.\n\nPython service error: ${error.message}\n${guidance}\n\nOptions:\n1. Ensure your backend is running and accessible at /health and /parse-pptx\n2. Set REACT_APP_PARSER_URL on Netlify to your Render URL\n3. Convert to PDF or export plain text as a temporary workaround.`);
     }
   }
 
